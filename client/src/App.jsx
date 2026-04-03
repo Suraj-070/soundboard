@@ -3,6 +3,9 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import axios from 'axios';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+axios.defaults.withCredentials = true;
+
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
