@@ -12,7 +12,8 @@ export const sessionMiddleware = session({
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-    secure: false, // Set to true if using HTTPS
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   },
 });
 
@@ -53,10 +54,10 @@ router.get('/discord', passport.authenticate('discord'));
 
 router.get('/discord/callback', 
   passport.authenticate('discord', { 
-    failureRedirect: 'http://localhost:5173',
+    failureRedirect: process.env.CLIENT_URL,
   }),
   (req, res) => {
-    res.redirect('http://localhost:5173');
+    res.redirect(process.env.CLIENT_URL);
   }
 );
 
